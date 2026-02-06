@@ -1,3 +1,4 @@
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
@@ -10,10 +11,11 @@ load_dotenv()
 class Base(DeclarativeBase):
     pass
 
-db = SQLAlchemy(model_class=Base)
+
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('DATABASE_URL')
+
+db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
-
-
+from app import routes, models
