@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Log In
+{% endblock %}
+
+{% block main %}
+<form action="/login" method="post">
+    <div class="mb-3">
+        <label for="email">Email</label>
+        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="email" type="email" placeholder="Email" id="email" required />
+        <span class="email-error"></span>
+    </div>
+    <div class="mb-3">
+        <label for="password">Password</label>
+        <input autocomplete="off" class="form-control mx-auto w-auto"name="password" type="password" placeholder="Password" id="password" required />
+        <span class="password-error"></span>
+    </div>
+    <button class="btn btn-primary" type="submit">Log In</button>
+</form>
+<script>
+    const form = document.querySelector("form");
+
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+
+    const emailError = document.querySelector("#email + span.email-error");
+    const passwordError = document.querySelector("#password + span.password-error");
+
+    function showEmailError() {
+        if (email.validity.valueMissing) {
+            emailError.textContent = "You need to enter an email address";
+        } else if (email.validity.typeMismatch) {
+            emailError.textContent = "Entered value needs to be an email address";
+        }
+    };
+
+    function showPasswordError() {
+        if (password.validity.valueMissing) {
+            passwordError.textContent = "You need to enter a password";
+        }
+    };
+
+    email.addEventListener("input", () => {
+        if (email.validity.valid) {
+            emailError.textContent = "";
+        } else {
+            showEmailError();
+        }
+    });
+
+    password.addEventListener("input", () => {
+        if (password.validity.valid) {
+            passwordError.textContent = "";
+        } else {
+            showPasswordError();
+        }
+    });
+
+    form.addEventListener("submit", (event) => {
+        const checks = [
+            { valid: email.validity.valid, showError: showEmailError },
+            { valid: password.validity.valid, showError: showPasswordError },
+        ];
+
+        const formIsValid = checks.every(check => check.valid);
+
+        if (!formIsValid) {
+            event.preventDefault();
+            checks.forEach(check => {
+                if (!check.valid) check.showError();
+            });
+        }
+    });
+</script>
+{% endblock %}
