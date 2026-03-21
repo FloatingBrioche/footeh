@@ -10,18 +10,18 @@ CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
-    email VARCHAR(200) UNIQUE NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    password_hash text NOT NULL
+    email VARCHAR(200) UNIQUE NOT NULL CHECK(email LIKE '%@%'),
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    password_hash TEXT
 );
 
 CREATE TABLE groups (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    created_at timestamptz NOT NULL DEFAULT NOW(),
-    status varchar(10) NOT NULL DEFAULT 'active',
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    status VARCHAR(10) NOT NULL DEFAULT 'active',
     game_location text,
-    game_day varchar(10) NOT NULL,
+    game_day VARCHAR(10) NOT NULL,
     game_time time NOT NULL,
     game_cost numeric NOT NULL,
     min_players int,
@@ -56,8 +56,8 @@ CREATE TABLE games (
 );
 
 CREATE TABLE games_users (
-    user_id int,
-    game_id int,
+    user_id INT,
+    game_id INT,
     team varchar(1) NOT NULL,
     has_paid bool NOT NULL
 );
