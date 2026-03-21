@@ -1,0 +1,205 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block main %}
+
+    {% if errors %}
+    <p class="error">{{ errors }}</p>
+    {% endif %}
+
+    <form action="/register" method="post">
+        <div class="mb-3">
+            <label for="first-name">First Name</label>
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="firstname"  minlength="1"
+                maxlength="100" name="first-name" placeholder="First Name"
+                required type="text">
+            <span class="first-name-error error"></span>
+        </div>
+        <div class="mb-3">
+            <label for="last-name">Last Name</label>
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="lastname" minlength="1" maxlength="100"
+                name="last-name" placeholder="Last Name" required type="text">
+            <span class="last-name-error error"></span>
+        </div>
+        <div class="mb-3">
+            <label for="email">Email</label>
+            <input autocomplete="off" class="form-control mx-auto w-auto" name="email" placeholder="Email"
+                type="email" id="email">
+            <span class="email-error error"></span>
+        </div>
+        <div class="mb-3">
+            <label for="password">Password</label>
+            <input class="form-control mx-auto w-auto" id="password" minlength="8" name="password" placeholder="Password" type="password">
+            <span class="password-error error"></span>
+        </div>
+        <div class="mb-3">
+            <label for="confirmation">Confirm password</label>
+            <input class="form-control mx-auto w-auto" id="confirmation" name="confirmation" placeholder="Confirm password" required type="password">
+            <span class="confirmation-error error"></span>
+        </div>
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+    <script>
+        const form = document.querySelector("form");
+
+        const email = document.getElementById("email");
+        const firstName = document.getElementById("first-name");
+        const lastName = document.getElementById("last-name");
+        const password = document.getElementById("password");
+        const confirmation = document.getElementById("confirmation");
+
+        const emailError = document.querySelector("#email + span.email-error");
+        const firstNameError = document.querySelector("#first-name + span.first-name-error");
+        const lastNameError = document.querySelector("#last-name + span.last-name-error");
+        const passwordError = document.querySelector("#password + span.password-error");
+        const confirmationError = document.querySelector("#confirmation + span.confirmation-error");
+
+        function showEmailError() {
+            if (email.validity.valueMissing) {
+                emailError.textContent = "You need to enter an email address";
+            } else if (email.validity.typeMismatch) {
+                emailError.textContent = "Entered value needs to be an email address";
+            }
+        };
+
+        function showFirstNameError() {
+            if (firstName.validity.valueMissing) {
+                firstNameError.textContent = "You need to enter your first name";
+            }
+        };
+
+        function showLastNameError() {
+            if (lastName.validity.valueMissing) {
+                lastNameError.textContent = "You need to enter your last name";
+            }
+        };
+
+        function showPasswordError() {
+            if (password.validity.valueMissing) {
+                passwordError.textContent = "You need to enter a password";
+            } else if (password.value.length < 8) {
+                passwordError.textContent = "Password should be at least 8 characters";
+            }
+        };
+
+        function showConfirmationError() {
+            if (confirmation.validity.valueMissing) {
+                confirmationError.textContent = "You need to confirm your password";
+            } else if (password.value !== confirmation.value) {
+                confirmationError.textContent = "Not matching the password";
+            }
+        };
+
+        email.addEventListener("input", () => {
+            if (email.validity.valid) {
+                emailError.textContent = "";
+            } else {
+                showEmailError();
+            }
+        });
+
+        firstName.addEventListener("input", () => {
+            if (firstName.validity.valid) {
+                firstNameError.textContent = "";
+            } else {
+                showFirstNameError();
+            }
+        });
+
+        lastName.addEventListener("input", () => {
+            if (lastName.validity.valid) {
+                lastNameError.textContent = "";
+            } else {
+                showLastNameError();
+            }
+        });
+
+        password.addEventListener("input", () => {
+            if (password.validity.valid) {
+                passwordError.textContent = "";
+            } else {
+                showPasswordError();
+            }
+        });
+
+        confirmation.addEventListener("input", () => {
+            if (confirmation.validity.valid && password.value === confirmation.value) {
+                confirmationError.textContent = "";
+            } else {
+                showConfirmationError();
+            }
+        });
+
+        form.addEventListener("submit", (event) => {
+            const checks = [
+                { valid: email.validity.valid, showError: showEmailError },
+                { valid: firstName.validity.valid, showError: showFirstNameError },
+                { valid: lastName.validity.valid, showError: showLastNameError },
+                { valid: password.validity.valid, showError: showPasswordError },
+                { valid: confirmation.validity.valid && password.value === confirmation.value, showError: showConfirmationError }
+            ];
+
+            const formIsValid = checks.every(check => check.valid);
+
+            if (!formIsValid) {
+                event.preventDefault();
+                checks.forEach(check => {
+                    if (!check.valid) check.showError();
+                });
+            }
+        });
+    </script>
+{% endblock %}
+
+<!-- {% block main2 %}
+<div class="form-container">
+    <h1>Sign up</h1>
+
+    {% if errors %}
+    <p class="error">{{ errors }}</p>
+    {% endif %}
+
+    <form action="/signup" method="post">
+        <div class="form-row">
+            <label for="email">Email</label>
+            <input autocomplete="off" autofocus name="email" placeholder="Email" required type="email" id="email" />
+            <span class="first-name-error error"></span>
+        </div>
+
+        <div class="form-row">
+            <label for="firstname">First name</label>
+            <input autocomplete="off" name="firstname" placeholder="First name" required type="text" minlength="1"
+                maxlength="100" id="firstname" />
+            <span class="first-name-error error"></span>
+        </div>
+
+        <div class="form-row">
+            <label for="lastname">Last name</label>
+            <input autocomplete="off" name="lastname" placeholder="Last name" required type="text" minlength="1"
+                maxlength="100" id="lastname" />
+            <span class="last-name-error error"></span>
+        </div class="form-row">
+
+        <div class="form-row">
+            <label for="password">Password</label>
+            <input autocomplete="off" name="password" placeholder="Password" required type="password" minlength="8"
+                id="password" />
+            <span class="password-error error"></span>
+        </div>
+
+        <div class="form-row">
+            <label for="confirmation">Confirm password</label>
+            <input autocomplete="off" name="confirmation" placeholder="Confirm password" required type="password"
+                id="confirmation" />
+            <span class="confirmation-error error"></span>
+        </div>
+
+        <input type="submit" value="Register">
+
+    </form>
+</div>
+
+{% endblock %} -->
