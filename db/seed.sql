@@ -29,6 +29,7 @@ CREATE TABLE groups (
     payment_link text
 );
 
+
 CREATE TABLE groups_users (
     user_id int,
     group_id int,
@@ -38,6 +39,16 @@ CREATE TABLE groups_users (
     CONSTRAINT gu_group_id FOREIGN KEY (group_id) 
         REFERENCES groups(id) ON DELETE CASCADE,
     PRIMARY KEY (user_id, group_id)
+);
+
+CREATE TABLE leagues (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    group_id int,
+    start_date date NOT NULL DEFAULT today(),
+    end_date date NOT NULL DEFAULT (today() + INTERVAL '6 months'),
+    CONSTRAINT leagues_group_id FOREIGN KEY (group_id) 
+        REFERENCES groups(id) ON DELETE CASCADE
 );
 
 CREATE TABLE games (
