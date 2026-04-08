@@ -14,8 +14,12 @@ class Base(DeclarativeBase):
 
 app = Flask(__name__, template_folder="../templates", static_folder="../static")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('DATABASE_URL')
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_pre_ping": True, "echo": True}
 
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
 from app import db_models, routes
+
+with app.app_context():
+    db.create_all()
