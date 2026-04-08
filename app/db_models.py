@@ -43,14 +43,15 @@ class Group(db.Model):
     __table_args__ = (sa.CheckConstraint(r"game_day LIKE '%day'", name="game_day_check"),)
 
     def __repr__(self):
-        return f'Group: {self.name}, ID: {self.id}'
+        return f'Group: {self.name}, ID: {self.id}, Status: {self.status}, Location: {self.game_location}'
     
 
 class Membership(db.Model):
     __tablename__ = "memberships"
 
-    user_id: so.Mapped[int] = so.mapped_column(sa.Integer, sa.ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
-    group_id: so.Mapped[int] = so.mapped_column(sa.Integer, sa.ForeignKey("groups.id", ondelete="CASCADE"), primary_key=True)
+    id: so.Mapped[int] = so.mapped_column(primary_key=True, autoincrement=True)
+    user_id: so.Mapped[int] = so.mapped_column(sa.Integer, sa.ForeignKey("users.id", ondelete="CASCADE"))
+    group_id: so.Mapped[int] = so.mapped_column(sa.Integer, sa.ForeignKey("groups.id", ondelete="CASCADE"))
     joined_at: so.Mapped[date] = so.mapped_column(sa.DateTime, server_default=sa.func.current_date())
     role: so.Mapped[str] = so.mapped_column(sa.String(20), server_default="player")
     status: so.Mapped[str] = so.mapped_column(sa.String(10), server_default="active")
@@ -67,6 +68,13 @@ class League(db.Model):
     group_id: so.Mapped[int] = so.mapped_column(sa.Integer, sa.ForeignKey("groups.id", ondelete="CASCADE"))
     start_date: so.Mapped[date] = so.mapped_column(sa.Date, server_default=sa.func.current_date())
     end_date: so.Mapped[date] = so.mapped_column(sa.Date, server_default=sa.func.current_date() + sa.text("INTERVAL '6 months'"))
+
+    __table_args__ = (
+            sa.CheckConstraint(
+                "end_date > start_date",
+                name="end_date_check",
+            ),
+        )
 
     def __repr__(self):
         return f'League: {self.name}, ID: {self.id}, Group ID: {self.group_id}'
@@ -88,7 +96,10 @@ class Game(db.Model):
     team_b_goals: so.Mapped[Optional[int]] = so.mapped_column(sa.Integer)
 
     __table_args__ = (
-        sa.CheckConstraint(r"game_day LIKE '%day'", name="game_day_check"),
+        sa.CheckConstraint(
+            "game_day IN ('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday')",
+            name="game_day_check",
+        ),
     )
 
     def __repr__(self):
@@ -98,13 +109,20 @@ class Game(db.Model):
 class Appearance(db.Model):
     __tablename__ = "appearances"
 
-    user_id: so.Mapped[int] = so.mapped_column(
-        sa.Integer, sa.ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
-    )
-    game_id: so.Mapped[int] = so.mapped_column(
-        sa.Integer, sa.ForeignKey("games.id", ondelete="CASCADE"), primary_key=True
-    )
+    id: so.Mapped[int] = so.mapped_column(primary_key=True, autoincrement=True)
+    user_id: so.Mapped[int] = so.mapped_column(sa.Integer, sa.ForeignKey("users.id", ondelete="CASCADE"))
+    game_id: so.Mapped[int] = so.mapped_column(sa.Integer, sa.ForeignKey("games.id", ondelete="CASCADE"))
     team: so.Mapped[str] = so.mapped_column(sa.String(1))  # 'A' or 'B'
     has_paid: so.Mapped[bool] = so.mapped_column(
         sa.Boolean, server_default=sa.false()
     )
+
+    __table_args__ = (
+        sa.CheckConstraint(
+            "team IN ('A','B')",
+            name="team_check",
+        ),
+    )
+
+    def __repr__(self):
+        return f'Appearance: User ID: {self.user_id}, Game ID: {self.game_id}, Team: {self.team}, Paid: {self.has_paid}'
