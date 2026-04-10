@@ -203,6 +203,7 @@ dev = [
     { name = "coverage" },
     { name = "pytest" },
     { name = "pytest-cov" },
+    { name = "pytest-testdox" },
     { name = "ruff" },
 ]
 
@@ -222,6 +223,7 @@ dev = [
     { name = "coverage", specifier = ">=7.13.3" },
     { name = "pytest", specifier = ">=9.0.2" },
     { name = "pytest-cov", specifier = ">=7.0.0" },
+    { name = "pytest-testdox", specifier = ">=3.1.0" },
     { name = "ruff", specifier = ">=0.15.0" },
 ]
 
@@ -569,6 +571,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/b1/51/a849f96e117386044471c8ec2bd6cfebacda285da9525c9106aeb28da671/pytest_cov-7.1.0.tar.gz", hash = "sha256:30674f2b5f6351aa09702a9c8c364f6a01c27aae0c1366ae8016160d1efc56b2", size = 55592, upload-time = "2026-03-21T20:11:16.284Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/9d/7a/d968e294073affff457b041c2be9868a40c1c71f4a35fcc1e45e5493067b/pytest_cov-7.1.0-py3-none-any.whl", hash = "sha256:a0461110b7865f9a271aa1b51e516c9a95de9d696734a2f71e3e78f46e1d4678", size = 22876, upload-time = "2026-03-21T20:11:14.438Z" },
+]
+
+[[package]]
+name = "pytest-testdox"
+version = "3.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/64/32/d833d70c7b30994c593d721001ab218f02baee4f6d5be322e9ba3f7f77c0/pytest-testdox-3.1.0.tar.gz", hash = "sha256:f48c49c517f0fb926560b383062db4961112078ec6ca555f91692c661bb5c765", size = 8917, upload-time = "2023-07-22T03:42:47.476Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/94/8c/515ff4ab03b744b00f1283455ff189537082a16f62aa5ace6171f4cb5aea/pytest_testdox-3.1.0-py2.py3-none-any.whl", hash = "sha256:f3a8f0789d668ccfb60f15aab81fb927b75066cfd19209176166bd7cecae73e6", size = 9041, upload-time = "2023-07-22T03:42:46.069Z" },
 ]
 
 [[package]]
