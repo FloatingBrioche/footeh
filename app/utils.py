@@ -1,7 +1,14 @@
 from functools import wraps
 
+
 from flask import redirect, session, request, render_template
 from pydantic import BaseModel, ValidationError
+
+from logging import getLogger
+
+logger = getLogger()
+
+logger.setLevel('INFO')
 
 
 def login_required(f):
@@ -17,16 +24,19 @@ def login_required(f):
     return wrapper
 
 
-def validate_form(f, validator: BaseModel, template: str):
+def validate_form(validator: BaseModel, template: str):
     """
     Decorator to validate POST request data using a Pydantic model. 
     If validation fails, renders the specified template with an error message.
     """
-    @wraps(f)
-    def wrapper(*args, **kwargs):
-        try:
-            validated_data = validator(**request.form)
-            return f(validated_data, *args, **kwargs)
-        except ValidationError as e:
-            return render_template(template, error_msg=str(e))
-    return wrapper
+    def provide_decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            logger.info("Validating registration")
+            try:
+                validated_data = validator(**request.form)
+                return f(validated_data, *args, **kwargs)
+            except ValidationError as e:
+                return render_template(template, error_msg=str(e))
+        return wrapper
+    return provide_decorator
