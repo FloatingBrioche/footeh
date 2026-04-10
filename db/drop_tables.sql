@@ -1,0 +1,11 @@
+DROP TABLE IF EXISTS appearances ;
+
+DROP TABLE IF EXISTS games ;
+
+DROP TABLE IF EXISTS leagues ;
+
+DROP TABLE  IF EXISTS memberships;
+
+DROP TABLE  IF EXISTS groups;
+
+DROP TABLE  IF EXISTS users;
