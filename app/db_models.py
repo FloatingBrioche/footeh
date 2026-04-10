@@ -18,7 +18,9 @@ class User(db.Model):
     created_at: so.Mapped[datetime] = so.mapped_column(sa.DateTime, server_default=sa.func.now())
     password_hash: so.Mapped[str] = so.mapped_column(sa.String(256))
 
-    __table_args__ = (sa.CheckConstraint("email LIKE '%@%'", name="email_check"))
+    __table_args__ = (
+        sa.CheckConstraint("email LIKE '_%@%_'", name="email_check"),
+    )
 
     def __repr__(self):
         return f'User: {self.first_name} {self.last_name}, ID: {self.id}, email: {self.email}'
@@ -40,7 +42,12 @@ class Group(db.Model):
     max_players: so.Mapped[Optional[int]] = so.mapped_column(sa.Integer)
     payment_link: so.Mapped[Optional[str]] = so.mapped_column(sa.Text)
 
-    __table_args__ = (sa.CheckConstraint(r"game_day LIKE '%day'", name="game_day_check"),)
+    __table_args__ = (
+        sa.CheckConstraint(
+            "game_day IN ('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday')",
+            name="game_day_check"
+        ),
+    )
 
     def __repr__(self):
         return f'Group: {self.name}, ID: {self.id}, Status: {self.status}, Location: {self.game_location}'
@@ -70,11 +77,8 @@ class League(db.Model):
     end_date: so.Mapped[date] = so.mapped_column(sa.Date, server_default=sa.func.current_date() + sa.text("INTERVAL '6 months'"))
 
     __table_args__ = (
-            sa.CheckConstraint(
-                "end_date > start_date",
-                name="end_date_check",
-            ),
-        )
+            sa.CheckConstraint("end_date > start_date", name="end_date_check"),
+    )
 
     def __repr__(self):
         return f'League: {self.name}, ID: {self.id}, Group ID: {self.group_id}'
@@ -94,13 +98,6 @@ class Game(db.Model):
     max_players: so.Mapped[Optional[int]] = so.mapped_column(sa.Integer)
     team_a_goals: so.Mapped[Optional[int]] = so.mapped_column(sa.Integer)
     team_b_goals: so.Mapped[Optional[int]] = so.mapped_column(sa.Integer)
-
-    __table_args__ = (
-        sa.CheckConstraint(
-            "game_day IN ('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday')",
-            name="game_day_check",
-        ),
-    )
 
     def __repr__(self):
         return f'ID: {self.id}, Group ID: {self.group_id}, Location: {self.game_location}, Date: {self.game_date}, Time: {self.game_time}'
