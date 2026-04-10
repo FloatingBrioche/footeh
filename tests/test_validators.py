@@ -65,3 +65,10 @@ class TestRegistration:
     def test_valid_args_has_hash(self, registration):
         new_user = Registration(**registration)
         assert new_user.password_hash
+
+    @mark.it("model_dump() returns only wanted keys")
+    def test_model_dump(self, registration):
+        new_user = Registration(**registration)
+        model_dump = new_user.model_dump()
+        required_keys = {'email', 'first_name', 'last_name', 'password_hash'}
+        assert set(model_dump.keys()) == required_keys

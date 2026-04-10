@@ -27,4 +27,6 @@ class Registration(BaseModel):
             raise ValueError("Password must be at least 8 characters long.")
         
         self.password_hash = generate_password_hash(password)
+        del self.password
+        del self.confirmation
         return self

@@ -30,7 +30,7 @@ def register_get():
 @app.route("/register", methods=["POST"])
 @validate_form(validator=Registration, template="register.html")
 def register_post(registration_data: Registration):
-    new_user = User(**registration_data.model_dump())
+    new_user = User(**registration_data.model_dump(exclude={"__pydantic_extra__"}))
     db.session.add(new_user)
     db.session.commit()
     session["user_id"] = new_user.id
