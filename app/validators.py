@@ -17,11 +17,14 @@ class Registration(BaseModel):
         password = self.__pydantic_extra__.get("password")
         confirmation = self.__pydantic_extra__.get("confirmation")
 
+        if not all([password, confirmation]):
+            raise ValueError("Missing password or confirmation.")
+
         if password != confirmation:
-            raise ValidationError("Passwords do not match.")
+            raise ValueError("Passwords do not match.")
         
         if len(password) < 8:
-            raise ValidationError("Password must be at least 8 characters long.")
+            raise ValueError("Password must be at least 8 characters long.")
         
         self.password_hash = generate_password_hash(password)
         return self
