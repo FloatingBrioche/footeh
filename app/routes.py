@@ -1,7 +1,6 @@
 from flask import render_template, redirect, session, request
 from werkzeug.security import check_password_hash
 
-
 from app import app, db
 from app.utils import login_required, validate_form
 from app.validators import Registration
@@ -19,7 +18,7 @@ def index():
 
 
 # <------------------------------------------------------ Register, Login, Logout
-@app.route("/register", methods=["GET"])
+@app.get("/register")
 def register_get():
     if "user_id" in session:
         return redirect("/")
@@ -27,12 +26,13 @@ def register_get():
         return render_template("register.html")
 
 
-@app.route("/register", methods=["POST"])
+@app.post("/register")
 @validate_form(validator=Registration, template="register.html")
 def register_post(registration_data: Registration):
-    new_user = User(**registration_data.model_dump(exclude={"__pydantic_extra__"}))
+    new_user = User(**registration_data.model_dump())
     db.session.add(new_user)
     db.session.commit()
+    app.logger.info("Registered new user: %s %s (ID: %d)", new_user.first_name, new_user.last_name, new_user.id)
     session["user_id"] = new_user.id
     session["first_name"] = new_user.first_name
     session["last_name"] = new_user.last_name
@@ -40,7 +40,7 @@ def register_post(registration_data: Registration):
     return redirect("/groups")
 
 
-@app.route("/login", methods=["GET"])
+@app.get("/login")
 def login_get():
     if "user_id" in session:
         return redirect("/games")
@@ -48,7 +48,7 @@ def login_get():
         return render_template("login.html")
 
 
-@app.route("/login", methods=["POST"])
+@app.post("/login")
 def login_post():
     email = request.form.get("email", "").strip()
     password = request.form.get("password", "")
@@ -79,21 +79,21 @@ def logout_get():
 
 # <------------------------------------------------------ Account
 
-@app.route("/account", methods=["GET"])
+@app.get("/account")
 @login_required
 def account_get():
     return render_template("account.html")
 
 
 # <------------------------------------------------------ Games
-@app.route("/games", methods=["GET"])
+@app.get("/games")
 @login_required
 def games_get():
     return render_template("games.html")
 
 
 # <------------------------------------------------------ Groups
-@app.route("/groups", methods=["GET"])
+@app.get("/groups")
 @login_required
 def groups_get():
     return render_template("groups.html")
