@@ -4,9 +4,14 @@ from typing import Optional
 
 import sqlalchemy as sa
 import sqlalchemy.orm as so
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import DeclarativeBase
 
-from app import db
 
+class Base(DeclarativeBase):
+    pass
+
+db = SQLAlchemy(model_class=Base)
 
 class User(db.Model):
     __tablename__ = "users"
