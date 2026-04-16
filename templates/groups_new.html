@@ -1,9 +1,81 @@
 {% extends "layout.html" %}
 
 {% block title %}
-FOOTEH
+Create Group
 {% endblock %}
 
 {% block main %}
 <p class="lead">Create a new group here.</p>
+
+{% if errors %}
+<p class="error">{{ errors }}</p>
+{% endif %}
+
+<form action="/groups" method="post">
+    <div class="mb-3">
+        <label for="name">Group Name</label>
+        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="name" minlength="1"
+            maxlength="100" name="name" placeholder="Group Name" required type="text">
+        <span class="name-error error"></span>
+    </div>
+    <div class="mb-3">
+        <label for="game_location">Location</label>
+        <input autocomplete="off" class="form-control mx-auto w-auto" id="game_location" minlength="1" maxlength="100"
+            name="game_location" placeholder="Location" required type="text">
+        <span class="location-error error"></span>
+    </div>
+    <div class="mb-3">
+        <label for="game_day">Game Day</label>
+        <select class="form-control mx-auto w-auto" id="game_day" name="game_day" required>
+            <option value="" disabled selected>Select the day you play on</option>
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+            <option value="Sunday">Sunday</option>
+        </select>
+        <span class="game-day-error error"></span>
+    </div>
+    <div class="mb-3">
+        <label for="game_time">Game Time</label>
+        <input autocomplete="off" class="form-control mx-auto w-auto" name="game_time" placeholder="Game Time" required type="time"
+            step="900" id="game_time">
+        <span class="game-time-error error"></span>
+    </div>
+    <div class="mb-3">
+        <label for="game_cost">Game Cost</label>
+        <input autocomplete="off" class="form-control mx-auto w-auto" name="game_cost" placeholder="Game Cost" required type="number"
+            step="0.50" id="game_cost">
+        <span class="game-cost-error error"></span>
+    </div>
+    <div class="mb-3">
+        <label for="min_players">Minimum Players</label>
+        <input autocomplete="off" class="form-control mx-auto w-auto" name="min_players" placeholder="Minimum Players" required type="number"
+            min="1" id="min_players">
+        <span class="min-players-error error"></span>
+    </div>
+    <div class="mb-3">
+        <label for="max_players">Maximum Players</label>
+        <input autocomplete="off" class="form-control mx-auto w-auto" name="max_players" placeholder="Maximum Players"
+            type="number" id="max_players">
+        <span class="max-players-error error"></span>
+    </div>
+    <div class="mb-3">
+        <label for="require_even_num_players">Require Even Number of Players</label>
+        <select class="form-control mx-auto w-auto" id="require_even_num_players" name="require_even_num_players" required>
+            <option value="" disabled selected>Select an option</option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+        </select>
+        <span class="require-even-num-players-error error"></span>
+    </div>
+    <div class="mb-3">
+        <label for="payment_instructions">Payment Instructions</label>
+        <textarea class="form-control mx-auto w-auto" name="payment_instructions" placeholder="Payment Instructions" id="payment_instructions"></textarea>
+        <span class="payment-instructions-error error"></span>
+    </div>
+    <button class="btn btn-primary" type="submit">Create Group</button>
+</form>
 {% endblock %}
