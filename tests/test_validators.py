@@ -7,7 +7,7 @@ from app.validators import Registration
 @fixture
 def registration():
     return {
-        "email": "martin@egg.com",
+        "email": "martin@eggs.com",
         "first_name": "Martin",
         "last_name": "Egg",
         "password": "password",
@@ -53,7 +53,7 @@ class TestRegistration:
             new_user = Registration(**registration)
 
     @mark.it("Raises Validation Error if password < 8")
-    def test_pass_not_confirm(self, registration):
+    def test_short_pass(self, registration):
         registration["password"] = "passwor"
         with raises(ValidationError):
             new_user = Registration(**registration)
