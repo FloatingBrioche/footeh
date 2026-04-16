@@ -1,3 +1,6 @@
+from decimal import Decimal
+from datetime import time
+
 from pydantic import BaseModel, Field, model_validator, ConfigDict
 from werkzeug.security import generate_password_hash
 
@@ -28,3 +31,17 @@ class Registration(BaseModel):
         del self.password
         del self.confirmation
         return self
+
+
+class NewGroup(BaseModel):
+    model_config = ConfigDict(
+        str_strip_whitespace=True
+    )
+    name: str = Field(max_length=100)
+    game_location: str
+    game_day: str = Field(pattern=r"^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)$")
+    game_time: time = Field(pattern=r"^\d{2}:\d{2}$")  # HH:MM format
+    game_cost: Decimal = Field(ge=0)
+    min_players: int | None = Field(ge=1)
+    max_players: int | None = Field(ge=1)
+    payment_instructions: str | None = None
