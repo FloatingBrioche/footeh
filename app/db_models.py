@@ -37,19 +37,18 @@ class Group(db.Model):
     __tablename__ = "groups"
 
     id: so.Mapped[int] = so.mapped_column(primary_key=True, autoincrement=True)
-    name: so.Mapped[str] = so.mapped_column(sa.String(100), unique=True)
-    join_code: so.Mapped[str] = so.mapped_column(sa.String(21))
-    created_at: so.Mapped[datetime] = so.mapped_column(
-        sa.DateTime, server_default=sa.func.now()
-    )
+    name: so.Mapped[str] = so.mapped_column(sa.String(100))
+    join_code: so.Mapped[str] = so.mapped_column(sa.String(30), unique=True)
+    created_at: so.Mapped[datetime] = so.mapped_column(sa.DateTime, server_default=sa.func.now())
     status: so.Mapped[str] = so.mapped_column(sa.String(10), server_default="active")
     game_location: so.Mapped[str] = so.mapped_column(sa.Text)
     game_day: so.Mapped[str] = so.mapped_column(sa.String(10))
     game_time: so.Mapped[time] = so.mapped_column(sa.Time)
     game_cost: so.Mapped[Decimal] = so.mapped_column(sa.Numeric(10, 2))
-    min_players: so.Mapped[Optional[int]] = so.mapped_column(sa.Integer)
+    min_players: so.Mapped[int] = so.mapped_column(sa.Integer)
     max_players: so.Mapped[Optional[int]] = so.mapped_column(sa.Integer)
-    payment_link: so.Mapped[Optional[str]] = so.mapped_column(sa.Text)
+    require_even_num_players: so.Mapped[bool] = so.mapped_column(sa.Boolean, server_default=sa.true())
+    payment_instructions: so.Mapped[Optional[str]] = so.mapped_column(sa.Text)
 
     __table_args__ = (
         sa.CheckConstraint(
