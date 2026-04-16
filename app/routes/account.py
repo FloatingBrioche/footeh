@@ -1,23 +1,8 @@
-from flask import render_template, redirect, session, request
 from werkzeug.security import check_password_hash
 
-from app import app, db
-from app.utils import login_required, validate_form
-from app.validators import Registration
-from app.db_models import User, Group, Membership, League, Game, Appearance
+from app.routes import *
 
-
-# <------------------------------------------------------ Home
-@app.route("/")
-@app.route("/index")
-def index():
-    if "user_id" in session:
-        return redirect("/games")
-
-    return render_template("index.html")
-
-
-# <------------------------------------------------------ Register, Login, Logout
+# <------------------------------------------------------ Register
 @app.get("/register")
 def register_get():
     if "user_id" in session:
@@ -45,6 +30,7 @@ def register_post(registration_data: Registration):
     return redirect("/groups")
 
 
+# <------------------------------------------------------ Login
 @app.get("/login")
 def login_get():
     if "user_id" in session:
@@ -80,6 +66,7 @@ def login_post():
     return redirect("/games")
 
 
+# <------------------------------------------------------ Logout
 @app.route("/logout", methods=["GET"])
 def logout_get():
     session.clear()
@@ -87,7 +74,7 @@ def logout_get():
 
 
 # <------------------------------------------------------ Account
-
+from app.routes import *
 
 @app.get("/account")
 @login_required
@@ -95,15 +82,7 @@ def account_get():
     return render_template("account.html")
 
 
-# <------------------------------------------------------ Games
-@app.get("/games")
-@login_required
-def games_get():
-    return render_template("games.html")
 
 
-# <------------------------------------------------------ Groups
-@app.get("/groups")
-@login_required
-def groups_get():
-    return render_template("groups.html")
+
+

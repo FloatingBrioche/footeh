@@ -23,4 +23,4 @@ with app.app_context():
     db.create_all()
 
 # Import routes after app and db are initialized to avoid circular imports
-from app import routes
+from app.routes import account, games, groups, home
