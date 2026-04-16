@@ -1,6 +1,7 @@
 from decimal import Decimal
 from datetime import time
 
+
 from pydantic import BaseModel, Field, model_validator, ConfigDict, computed_field
 from werkzeug.security import generate_password_hash
 

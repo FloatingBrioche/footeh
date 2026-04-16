@@ -2,7 +2,7 @@ from functools import wraps
 
 from flask import redirect, session, request, render_template, current_app as app
 from pydantic import BaseModel, ValidationError
-from wonderwords import RandomWord
+
 
 
 def login_required(f):
@@ -41,15 +41,4 @@ def validate_form(validator: BaseModel, template: str):
 
     return provide_decorator
 
-
-rw = RandomWord()
-
-def generate_join_code():
-    shared_settings = {"exclude_with_spaces":True, "word_max_length":9}
-    
-    w1 = rw.word(**shared_settings, include_parts_of_speech=["adjectives"])
-    w2 = rw.word(**shared_settings, include_parts_of_speech=["adjectives", "nouns"])
-    w3 = rw.word(**shared_settings, include_parts_of_speech=["nouns"])
-
-    return f"{w1}-{w2}-{w3}"
 
