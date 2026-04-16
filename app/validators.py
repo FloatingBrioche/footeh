@@ -1,7 +1,7 @@
 from decimal import Decimal
 from datetime import time
 
-from pydantic import BaseModel, Field, model_validator, ConfigDict
+from pydantic import BaseModel, Field, model_validator, ConfigDict, computed_field
 from werkzeug.security import generate_password_hash
 
 
@@ -44,4 +44,10 @@ class NewGroup(BaseModel):
     game_cost: Decimal = Field(ge=0)
     min_players: int | None = Field(ge=1)
     max_players: int | None = Field(ge=1)
+    require_even_num_players: bool = True
     payment_instructions: str | None = None
+
+    @computed_field
+    @property
+    def join_code(self) -> str:
+        return "egg-egg-egg"

@@ -15,7 +15,7 @@ app.secret_key = os.getenv("SESSION_SECRET_KEY").encode()
 
 # Database configuration & initialization
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
-app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_pre_ping": True, "echo": True}
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_pre_ping": True, "echo": False}
 db = db_models.db
 db.init_app(app)
 
