@@ -5,6 +5,8 @@ from datetime import time
 from pydantic import BaseModel, Field, model_validator, ConfigDict, computed_field
 from werkzeug.security import generate_password_hash
 
+from utils.aux_functions import generate_join_code, is_jcode_unique
+
 
 class Registration(BaseModel):
     model_config = ConfigDict(
@@ -51,4 +53,11 @@ class NewGroup(BaseModel):
     @computed_field
     @property
     def join_code(self) -> str:
-        return "egg-egg-egg"
+        from app import db
+        
+        jcode = generate_join_code()
+
+        while not is_jcode_unique(jcode, db):
+            jcode = generate_join_code()
+    
+        return jcode
