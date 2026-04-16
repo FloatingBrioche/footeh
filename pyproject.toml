@@ -12,6 +12,7 @@ dependencies = [
     "psycopg2-binary>=2.9.11",
     "pydantic>=2.12.5",
     "python-dotenv>=1.2.1",
+    "wonderwords>=3.0.1",
 ]
 
 [dependency-groups]
