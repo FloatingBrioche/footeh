@@ -77,6 +77,13 @@ class Membership(db.Model):
     role: so.Mapped[str] = so.mapped_column(sa.String(20), server_default="player")
     status: so.Mapped[str] = so.mapped_column(sa.String(10), server_default="active")
 
+    __table_args__ = (
+            sa.CheckConstraint(
+                "role IN ('organiser','player')",
+                name="role_check",
+            ),
+        )
+
     def __repr__(self):
         return f"Membership: User ID: {self.user_id}, Group ID: {self.group_id}, Role: {self.role}, Status: {self.status}"
 
