@@ -25,7 +25,7 @@ class Registration(BaseModel):
             raise ValueError("Missing password or confirmation.")
 
         if password != confirmation:
-            raise ValueError("Passwords do not match.")
+            raise ValueError("Password does not match confirmation.")
 
         if len(password) < 8:
             raise ValueError("Password must be at least 8 characters long.")

@@ -10,7 +10,27 @@ def groups_get():
 @app.post("/groups")
 @login_required
 @validate_form(validator=NewGroup, template="groups_new.html")
-def groups_post():
+def groups_post(new_group_data: NewGroup):
+    new_group = Group(**new_group_data.model_dump())
+    db.session.add(new_group)
+    new_membership = Membership(
+        user_id=session["user_id"],
+        group_id=new_group.id,
+        role="organiser",
+    )
+    db.session.add(new_membership)
+    db.session.commit()
+    app.logger.info(
+        "Created new group: %s (ID: %d)",
+        new_group.name,
+        new_group.id,
+    )
+    app.logger.info(
+        "Added user ID %d as admin to group ID %d",
+        session["user_id"],
+        new_group.id,
+    )
+    
     return render_template("groups.html")
 
 
