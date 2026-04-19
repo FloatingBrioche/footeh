@@ -2,6 +2,7 @@ from werkzeug.security import check_password_hash
 
 from app.routes import *
 
+
 # <------------------------------------------------------ Register
 @app.get("/register")
 def register_get():
@@ -76,13 +77,8 @@ def logout_get():
 # <------------------------------------------------------ Account
 from app.routes import *
 
+
 @app.get("/account")
 @login_required
 def account_get():
     return render_template("account.html")
-
-
-
-
-
-

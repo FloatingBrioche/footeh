@@ -3,6 +3,7 @@ from pytest import mark, raises, fixture
 
 from utils.aux_functions import generate_join_code, is_jcode_unique
 
+
 class TestGenerateJoinCode:
     @mark.it("Generates join code <= 30 words")
     def test_code_le_30(self):

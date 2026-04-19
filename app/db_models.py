@@ -39,7 +39,9 @@ class Group(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True, autoincrement=True)
     name: so.Mapped[str] = so.mapped_column(sa.String(100))
     join_code: so.Mapped[str] = so.mapped_column(sa.String(30), unique=True)
-    created_at: so.Mapped[datetime] = so.mapped_column(sa.DateTime, server_default=sa.func.now())
+    created_at: so.Mapped[datetime] = so.mapped_column(
+        sa.DateTime, server_default=sa.func.now()
+    )
     status: so.Mapped[str] = so.mapped_column(sa.String(10), server_default="active")
     game_location: so.Mapped[str] = so.mapped_column(sa.Text)
     game_day: so.Mapped[str] = so.mapped_column(sa.String(10))
@@ -47,7 +49,9 @@ class Group(db.Model):
     game_cost: so.Mapped[Decimal] = so.mapped_column(sa.Numeric(10, 2))
     min_players: so.Mapped[int] = so.mapped_column(sa.Integer)
     max_players: so.Mapped[Optional[int]] = so.mapped_column(sa.Integer)
-    require_even_num_players: so.Mapped[bool] = so.mapped_column(sa.Boolean, server_default=sa.true())
+    require_even_num_players: so.Mapped[bool] = so.mapped_column(
+        sa.Boolean, server_default=sa.true()
+    )
     payment_instructions: so.Mapped[Optional[str]] = so.mapped_column(sa.Text)
 
     __table_args__ = (
@@ -78,11 +82,11 @@ class Membership(db.Model):
     status: so.Mapped[str] = so.mapped_column(sa.String(10), server_default="active")
 
     __table_args__ = (
-            sa.CheckConstraint(
-                "role IN ('organiser','player')",
-                name="role_check",
-            ),
-        )
+        sa.CheckConstraint(
+            "role IN ('organiser','player')",
+            name="role_check",
+        ),
+    )
 
     def __repr__(self):
         return f"Membership: User ID: {self.user_id}, Group ID: {self.group_id}, Role: {self.role}, Status: {self.status}"

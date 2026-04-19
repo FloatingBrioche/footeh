@@ -4,7 +4,6 @@ from flask import redirect, session, request, render_template, current_app as ap
 from pydantic import BaseModel, ValidationError
 
 
-
 def login_required(f):
     """
     Decorate routes to require login.
@@ -40,5 +39,3 @@ def validate_form(validator: BaseModel, template: str):
         return wrapper
 
     return provide_decorator
-
-

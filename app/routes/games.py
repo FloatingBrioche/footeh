@@ -1,5 +1,6 @@
 from app.routes import *
 
+
 # <------------------------------------------------------ Games
 @app.get("/games")
 @login_required

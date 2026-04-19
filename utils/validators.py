@@ -37,12 +37,12 @@ class Registration(BaseModel):
 
 
 class NewGroup(BaseModel):
-    model_config = ConfigDict(
-        str_strip_whitespace=True
-    )
+    model_config = ConfigDict(str_strip_whitespace=True)
     name: str = Field(max_length=100)
     game_location: str
-    game_day: str = Field(pattern=r"^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)$")
+    game_day: str = Field(
+        pattern=r"^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)$"
+    )
     game_time: time = Field(pattern=r"^\d{2}:\d{2}$")  # HH:MM format
     game_cost: Decimal = Field(ge=0)
     min_players: int | None = Field(ge=1)
@@ -54,10 +54,10 @@ class NewGroup(BaseModel):
     @property
     def join_code(self) -> str:
         from app import db
-        
+
         jcode = generate_join_code()
 
         while not is_jcode_unique(jcode, db):
             jcode = generate_join_code()
-    
+
         return jcode

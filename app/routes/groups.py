@@ -1,10 +1,22 @@
 from app.routes import *
 
+
 # <------------------------------------------------------ Groups
 @app.get("/groups")
 @login_required
 def groups_get():
-    return render_template("groups.html")
+    stmt = (
+        db.select(Group.__table__, Membership.role)
+        .join(Membership, Group.id == Membership.group_id)
+        .where(
+            Membership.user_id == session["user_id"],
+            Membership.status == "active",
+            Group.status == "active",
+        )
+    )
+    users_groups = db.session.execute(stmt).scalars().all()
+
+    return render_template("groups.html", groups=users_groups)
 
 
 @app.post("/groups")
@@ -30,8 +42,8 @@ def groups_post(new_group_data: NewGroup):
         session["user_id"],
         new_group.id,
     )
-    
-    return render_template("groups.html")
+
+    return redirect("/groups")
 
 
 @app.get("/groups/new")

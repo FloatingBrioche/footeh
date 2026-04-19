@@ -1,5 +1,6 @@
 from app.routes import *
 
+
 # <------------------------------------------------------ Home
 @app.route("/")
 @app.route("/index")
