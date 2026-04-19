@@ -1,27 +1,18 @@
 from flask import render_template, redirect, session, request
 
-from app import app, db
+from app import app
 from utils.decorators import login_required, validate_form
 from utils.validators import NewGroup
-from app.db.models import Group, Membership
+from app.db.models import Group
 from app.db.input import add_group
+from app.db.output import get_groups
 
 
 # <------------------------------------------------------ Groups
 @app.get("/groups")
 @login_required
 def groups_get():
-    stmt = (
-        db.select(Group.__table__, Membership.role)
-        .join(Membership, Group.id == Membership.group_id)
-        .where(
-            Membership.user_id == session["user_id"],
-            Membership.status == "active",
-            Group.status == "active",
-        )
-    )
-    users_groups = db.session.execute(stmt).scalars().all()
-
+    users_groups = get_groups(session["user_id"])
     return render_template("groups.html", groups=users_groups)
 
 
@@ -41,7 +32,6 @@ def groups_post(new_group_data: NewGroup):
         session["user_id"],
         new_group.id,
     )
-
     return redirect("/groups")
 
 
