@@ -6,3 +6,7 @@ To run the Flask app in debug mode:
 
 To apply ruff linting:
 `uv run ruff format`
+
+To update the db schema:
+
+`uv run flask --app footeh update-db-schema`
