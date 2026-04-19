@@ -28,7 +28,7 @@ def validate_form(validator: BaseModel, template: str):
     def provide_decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
-            app.logger.info("Validating registration")
+            app.logger.info("Validating request")
             try:
                 validated_data = validator(**request.form)
                 return f(validated_data, *args, **kwargs)

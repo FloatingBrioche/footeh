@@ -1,4 +1,10 @@
-from app.routes import *
+from flask import render_template, redirect, session, request
+
+from app import app, db
+from utils.decorators import login_required, validate_form
+from utils.validators import NewGroup
+from app.db.models import Group, Membership
+from app.db.input import add_group
 
 
 # <------------------------------------------------------ Groups
@@ -24,14 +30,7 @@ def groups_get():
 @validate_form(validator=NewGroup, template="groups_new.html")
 def groups_post(new_group_data: NewGroup):
     new_group = Group(**new_group_data.model_dump())
-    db.session.add(new_group)
-    new_membership = Membership(
-        user_id=session["user_id"],
-        group_id=new_group.id,
-        role="organiser",
-    )
-    db.session.add(new_membership)
-    db.session.commit()
+    add_group(new_group, session["user_id"])
     app.logger.info(
         "Created new group: %s (ID: %d)",
         new_group.name,

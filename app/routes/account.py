@@ -1,6 +1,12 @@
 from werkzeug.security import check_password_hash
+from flask import render_template, redirect, session, request
 
-from app.routes import *
+from app import app
+from utils.decorators import login_required, validate_form
+from utils.validators import Registration
+from app.db.models import User
+from app.db.input import add_user
+from app.db.output import get_user
 
 
 # <------------------------------------------------------ Register
@@ -16,8 +22,7 @@ def register_get():
 @validate_form(validator=Registration, template="register.html")
 def register_post(registration_data: Registration):
     new_user = User(**registration_data.model_dump())
-    db.session.add(new_user)
-    db.session.commit()
+    add_user(new_user)
     app.logger.info(
         "Registered new user: %s %s (ID: %d)",
         new_user.first_name,
@@ -44,10 +49,7 @@ def login_get():
 def login_post():
     email = request.form.get("email", "").strip()
     password = request.form.get("password", "")
-
-    user = db.session.execute(
-        db.select(User).filter_by(email=email)
-    ).scalar_one_or_none()
+    user = get_user(email)
 
     if not user:
         error_message = (
@@ -75,9 +77,6 @@ def logout_get():
 
 
 # <------------------------------------------------------ Account
-from app.routes import *
-
-
 @app.get("/account")
 @login_required
 def account_get():
