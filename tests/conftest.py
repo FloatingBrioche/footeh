@@ -7,7 +7,6 @@ from pytest import fixture
 from app import app, db
 
 
-
 cwd = os.getcwd()
 sys.path.insert(0, cwd)
 

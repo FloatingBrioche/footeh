@@ -17,4 +17,3 @@ def add_group(group: Group, user_id):
     )
     db.session.add(new_membership)
     db.session.commit()
-

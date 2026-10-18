@@ -26,16 +26,14 @@ with app.app_context():
 
 @click.command("update-db-schema")
 def update_db_schema():
-    
     """Initialize the database."""
     db.drop_all()
     db.create_all()
     click.echo("DB schema updated.")
+
 
 app.cli.add_command(update_db_schema)
 
 
 # Import routes after app and db are initialized to avoid circular imports
 from app.routes import account, games, groups, home
-
-

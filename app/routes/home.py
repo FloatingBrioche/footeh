@@ -2,6 +2,7 @@ from flask import render_template, redirect, session, request
 
 from app import app
 
+
 # <------------------------------------------------------ Home
 @app.route("/")
 @app.route("/index")
