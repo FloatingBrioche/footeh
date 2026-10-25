@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Join Group
+{% endblock %}
+
+{% block main %}
+
+
+<p>Enter the group code to join:</p>
+<form action="/groups/join" method="get">
+    <input type="text" name="join_code" placeholder="Group Join Code" required>
+    <button type="submit">Join Group</button>
+</form>
+
+{% endblock %}

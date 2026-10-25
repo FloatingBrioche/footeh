@@ -9,4 +9,4 @@ from app.db.models import User, Group, Membership, League, Game, Appearance
 @app.get("/games")
 @login_required
 def games_get():
-    return render_template("games.html")
+    return render_template("games/games.html")

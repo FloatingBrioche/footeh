@@ -15,11 +15,11 @@ def register_get():
     if "user_id" in session:
         return redirect("/")
     else:
-        return render_template("register.html")
+        return render_template("account/register.html")
 
 
 @app.post("/register")
-@validate_form(validator=Registration, template="register.html")
+@validate_form(validator=Registration, template="account/register.html")
 def register_post(registration_data: Registration):
     new_user = User(**registration_data.model_dump())
     add_user(new_user)
@@ -42,7 +42,7 @@ def login_get():
     if "user_id" in session:
         return redirect("/games")
     else:
-        return render_template("login.html")
+        return render_template("account/login.html")
 
 
 @app.post("/login")
@@ -80,4 +80,4 @@ def logout_get():
 @app.get("/account")
 @login_required
 def account_get():
-    return render_template("account.html")
+    return render_template("account/manage.html")
