@@ -1,4 +1,5 @@
 from wonderwords import RandomWord
+from sqlalchemy import text
 
 rw = RandomWord()
 
@@ -14,5 +15,5 @@ def generate_join_code():
 
 
 def is_jcode_unique(join_code: str, db) -> bool:
-    current_join_codes = db.session.execute("SELECT join_code FROM groups")
+    current_join_codes = db.session.execute(text("SELECT join_code FROM groups"))
     return join_code not in current_join_codes

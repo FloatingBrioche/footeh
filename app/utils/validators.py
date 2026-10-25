@@ -5,7 +5,7 @@ from datetime import time
 from pydantic import BaseModel, Field, model_validator, ConfigDict, computed_field
 from werkzeug.security import generate_password_hash
 
-from utils.aux_functions import generate_join_code, is_jcode_unique
+from app.utils.aux_functions import generate_join_code, is_jcode_unique
 
 
 class Registration(BaseModel):
@@ -43,7 +43,7 @@ class NewGroup(BaseModel):
     game_day: str = Field(
         pattern=r"^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)$"
     )
-    game_time: time = Field(pattern=r"^\d{2}:\d{2}$")  # HH:MM format
+    game_time: time
     game_cost: Decimal = Field(ge=0)
     min_players: int | None = Field(ge=1)
     max_players: int | None = Field(ge=1)

@@ -5,5 +5,18 @@ Groups
 {% endblock %}
 
 {% block main %}
-<p class="lead">See all of your groups here.</p>
+
+{% if groups %}
+    {% for group in groups %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ group.name }}</h5>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>You are not a member of any groups.</p> 
+    <p>Why not <a href="/groups/create">create a group</a> or <a href="/groups/join">join one</a>?</p>
+{% endif %}
+
 {% endblock %}

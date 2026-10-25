@@ -2,8 +2,8 @@ from werkzeug.security import check_password_hash
 from flask import render_template, redirect, session, request
 
 from app import app
-from utils.decorators import login_required, validate_form
-from utils.validators import Registration
+from app.utils.decorators import login_required, validate_form
+from app.utils.validators import Registration
 from app.db.models import User
 from app.db.input import add_user
 from app.db.output import get_user

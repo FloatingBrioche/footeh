@@ -10,6 +10,7 @@ def add_user(user):
 
 def add_group(group: Group, user_id):
     db.session.add(group)
+    db.session.commit()
     new_membership = Membership(
         user_id=user_id,
         group_id=group.id,

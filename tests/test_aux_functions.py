@@ -1,7 +1,7 @@
 from pytest import mark, raises, fixture
 
 
-from utils.aux_functions import generate_join_code, is_jcode_unique
+from app.utils.aux_functions import generate_join_code, is_jcode_unique
 
 
 class TestGenerateJoinCode:

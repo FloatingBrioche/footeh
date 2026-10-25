@@ -1,8 +1,8 @@
 from flask import render_template, redirect, session, request
 
 from app import app
-from utils.decorators import login_required, validate_form
-from utils.validators import NewGroup
+from app.utils.decorators import login_required, validate_form
+from app.utils.validators import NewGroup
 from app.db.models import Group
 from app.db.input import add_group
 from app.db.output import get_groups
@@ -35,13 +35,13 @@ def groups_post(new_group_data: NewGroup):
     return redirect("/groups")
 
 
-@app.get("/groups/new")
+@app.get("/groups/create")
 @login_required
-def groups_new_get():
-    render_template("group_new.html")
+def groups_create_get():
+    return render_template("groups_create.html")
 
 
 @app.get("/groups/join")
 @login_required
 def groups_join_get():
-    render_template("group_join.html")
+    return render_template("groups_join.html")

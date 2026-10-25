@@ -1,7 +1,7 @@
 from pytest import mark, raises, fixture
 from pydantic import ValidationError
 
-from utils.validators import Registration, NewGroup
+from app.utils.validators import Registration, NewGroup
 
 
 @fixture

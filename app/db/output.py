@@ -1,4 +1,4 @@
-from app import db
+from app import db, app
 from app.db.models import Group, Membership, User
 
 
@@ -10,6 +10,7 @@ def get_user(email: str):
 
 
 def get_groups(user_id):
+    app.logger.info("Fetching groups for user ID: %d", user_id)
     stmt = (
         db.select(Group.__table__, Membership.role)
         .join(Membership, Group.id == Membership.group_id)
@@ -19,5 +20,6 @@ def get_groups(user_id):
             Group.status == "active",
         )
     )
-    users_groups = db.session.execute(stmt).scalars().all()
+    users_groups = db.session.execute(stmt).all()
+    app.logger.info("Fetched %d groups for user ID: %d", len(users_groups), user_id)
     return users_groups
